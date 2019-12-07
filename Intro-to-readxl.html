@@ -426,6 +426,29 @@ fish_counts &lt;- read_csv(here(&quot;R-workshop-data&quot;,&quot;fish_counts_cu
 </div>
 <div id="how-can-we-read-in-data-from-an-excel-workbook-with-multiple-worksheets" class="section level3">
 <h3>How can we read in data from an Excel workbook with MULTIPLE worksheets?</h3>
+<p>We only want to read in data for Goleta Beach (worksheet named: golb)</p>
+<pre class="r"><code>kelp_golb &lt;- read_excel(here(&quot;R-workshop-data&quot;,&quot;kelp_counts_curated.xlsx&quot;),
+                        sheet = &quot;golb&quot;)</code></pre>
+</div>
+<div id="read-in-and-combine-data-from-multiple-excel-worksheets-simultaneously-using-purrrmap_df" class="section level3">
+<h3>Read in AND combine data from multiple Excel worksheets simultaneously using purrr::map_df()</h3>
+<pre class="r"><code># create a path to get to the data
+# kelp_path &lt;- here(&quot;R-workshop-data&quot;, &quot;kelp_counts_curated.xlsx&quot;)
+# 
+# Comman + Shift + M for new pipe operatttor
+# kelp_all_sites &lt;- kelp_path %&gt;%
+#   excel_sheets() %&gt;% 
+#   set_names() %&gt;% 
+#   purr::map_df(read_excel, kelp_path)</code></pre>
+</div>
+<div id="write-a-file-back-to-an-excel-spreadsheet" class="section level3">
+<h3>Write a file back to an Excel spreadsheet</h3>
+<p>We’re going to write our “kelp_golb” object to a CSV file</p>
+<pre class="r"><code>write_csv(kelp_golb, &quot;kelp_goleta_july.csv&quot;)
+
+#write_csv(kelp_golb, here())
+
+write_xlsx(kelp_golb, &quot;kelp_goleta_excel.xlsx&quot;)</code></pre>
 </div>
 </div>
 
