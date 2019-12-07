@@ -32,3 +32,29 @@ library(here)
 fish_counts <- read_csv(here("R-workshop-data","fish_counts_curated.csv"))
 ```
 
+### Read in data from a single Excel worksheet
+
+Now, to read in an excel spreadsheet, we'll use the function 'read_excel()'.
+
+substrate_cover_curated.xlsx
+
+```{r}
+substrate_cover <- read_excel(here("R-workshop-data","substrate_cover_curated.xlsx"),
+                              skip = 4,
+                              na = "-9999")
+```
+
+### Use read_excel() to read in a range of values
+
+```{r}
+carp_cover_2000 <- read_excel(here("R-workshop-data","substrate_cover_curated.xlsx"), range = "D12:I15",
+                              col_name = c("site",
+                                           "transect",
+                                           "quad",
+                                           "side",
+                                           "type",
+                                           "coverage"))
+```
+
+### How can we read in data from an Excel workbook with MULTIPLE worksheets?
+

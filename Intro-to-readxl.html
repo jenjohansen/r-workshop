@@ -406,6 +406,27 @@ fish_counts &lt;- read_csv(here(&quot;R-workshop-data&quot;,&quot;fish_counts_cu
 ##   total_count = col_double()
 ## )</code></pre>
 </div>
+<div id="read-in-data-from-a-single-excel-worksheet" class="section level3">
+<h3>Read in data from a single Excel worksheet</h3>
+<p>Now, to read in an excel spreadsheet, we’ll use the function ‘read_excel()’.</p>
+<p>substrate_cover_curated.xlsx</p>
+<pre class="r"><code>substrate_cover &lt;- read_excel(here(&quot;R-workshop-data&quot;,&quot;substrate_cover_curated.xlsx&quot;),
+                              skip = 4,
+                              na = &quot;-9999&quot;)</code></pre>
+</div>
+<div id="use-read_excel-to-read-in-a-range-of-values" class="section level3">
+<h3>Use read_excel() to read in a range of values</h3>
+<pre class="r"><code>carp_cover_2000 &lt;- read_excel(here(&quot;R-workshop-data&quot;,&quot;substrate_cover_curated.xlsx&quot;), range = &quot;D12:I15&quot;,
+                              col_name = c(&quot;site&quot;,
+                                           &quot;transect&quot;,
+                                           &quot;quad&quot;,
+                                           &quot;side&quot;,
+                                           &quot;type&quot;,
+                                           &quot;coverage&quot;))</code></pre>
+</div>
+<div id="how-can-we-read-in-data-from-an-excel-workbook-with-multiple-worksheets" class="section level3">
+<h3>How can we read in data from an Excel workbook with MULTIPLE worksheets?</h3>
+</div>
 </div>
 
 
