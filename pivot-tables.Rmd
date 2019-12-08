@@ -52,13 +52,83 @@ ggplot(data = lobsters, aes(x = year))+
 
 How has the average size of lobsters has changed over time across sites?
 
+Pivot tables in R are groupy_by %>% summarize
+
+
+```{r}
+
+lobsters %>% # in my head I say "and then"; i.e. passes the data to the next argument as you continue wrangling it
+  group_by(year) %>% 
+  summarize(count_by_year = n())
+
+```
+
+What if we didn't group_by first?
+
+
+```{r}
+
+lobsters %>% 
+  summarize(count_by_something = n())
+
+## assign our summary to a new variable
+
+lobsters_sum <- lobsters %>% 
+  summarize(count_by_something = n())
+
+
+```
+
+
+## group_by multiple variables
+
+And summarize by multiple variables
+
+We used mean() to calculate the mean size of lobsters by each site and year, and used na.rm = TRUE to calculate mean despite having missing values in our raw data.
+
+
+```{r}
+
+siteyear_summary <- lobsters %>% 
+  group_by(site, year) %>% 
+  summarize(count_by_siteyear = n(), 
+            mean_size_mm = mean(size_mm, na.rm = TRUE),
+            sd_size_mm = sd(size_mm, na.rm = TRUE))
+
+siteyear_summary
+
+```
+
+
+# Activity
+
+1. Calculate the median size_mm (?median)
+2. Create and ggsave a plot
 
 
 
 
+```{r}
+
+siteyear_summary <- lobsters %>% 
+  group_by(site, year) %>% 
+  summarize(count_by_siteyear = n(), 
+            mean_size_mm = mean(size_mm, na.rm = TRUE),
+            sd_size_mm = sd(size_mm, na.rm = TRUE),
+            median_size_mm = median(size_mm, na.rm = TRUE))
+
+siteyear_summary
+
+##ggplot: geom_line
+
+ggplot(data = siteyear_summary, aes(x = year, y = median_size_mm, color = site)) +
+  geom_line()
 
 
+# I created a figures folder fromt he RStudio Files pane in order to be organized and for this code to run
+ggsave(here("figures/lobsters-line.png"))
 
+```
 
 
 
