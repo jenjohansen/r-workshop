@@ -103,12 +103,83 @@ Some ways to do this:
 - putting each filter condition within a separate filter line
 
 Reminder: "OR" %in%
+Remember: if filtering with pipe, the order matters.
+
 ```{r}
 urchin_abur_mohk <- invert_counts %>%
   filter(site %in% c("abur", "mohk"), common_name == "purple urchin")
+
+# EXAMPLE PIPE ORDER
+# pipe_test <- fish_counts %>%
+#  select(common_name, total_count) %>% 
+#  filter(year == 2016)
+```
+
+Activity: create a subset from fish_counts called low_gb_rw that only contains:
+
+- observations for "garibaldi" and "rock wrasse"
+- where the total_count is LESS than 10
+
+```{r}
+low_gb_rw <- fish_counts %>% 
+  filter(common_name %in% c("garibaldi", "rock wrasse"),
+         total_count < 10)
+```
+
+## Filter rows that DO NOT MATCH conditions
+
+Use != (indicates "does NOT match")
+
+Try to create a subset from fish_counts that does NOT contain observations for Mohawk Reef ("mohk")
+
+```{r}
+fish_no_mohk <- fish_counts %>% 
+  filter(site != "mohk")
+```
+
+An example of filter as part of a piped sequence:
+
+```{r}
+senorita_allyears <- fish_counts %>% 
+  filter (common_name == "senorita") %>% 
+  group_by(site) %>% 
+  summarize(count_all_years = sum(total_count))
+```
+
+## A couple ways of joining data frames
+
+- 'full_join()': keeps everything (safe join) i.e. you don't have to have any matches in order to join
+- 'left_join()': If we are merging A and B, will only retain observations from B that have matches in A
+
+```{r}
+fish_2016_2017 <- fish_counts %>% 
+  filter(year == 2016 | year == 2017)
 ```
 
 
+Join that data frame with kelp_counts_abur:
+
+```{r}
+#abur_kelp_join <- fish_2016_2017 %>% 
+#  full_join(kelp_counts_abur, by = c("year", "site"))
+```
+
+```{r}
+kelp_counts_abur <- kelp_counts_abur %>% 
+  mutate(year = as.numeric(year))
+
+class(kelp_counts_abur$year)
+
+```
 
 
+Now we can join them:
+
+```{r}
+abur_kelp_join <- fish_2016_2017 %>% 
+  full_join(kelp_counts_abur, by = c("year", "site"))
+
+ggplot(abur_kelp_join, aes(x = year, y = total_count)) +
+  geom_col(aes(fill = site), position = "dodge")
+```
 
