@@ -1,0 +1,114 @@
+---
+title: "Filter/joins (like VLOOKUP in Excel)"
+output: html_document
+---
+
+
+## Attach packages:
+
+tidyverse, readxl, here
+
+```{r, include = FALSE}
+
+library(tidyverse)
+library(readxl)
+library(here)
+
+```
+
+Read in 3 files and store them as objects
+
+- invert_counts_curated.xlsx
+- fish_counts_curated.csv
+- kelp_counts_curated.xlsx
+
+```{r}
+
+invert_counts <- read_excel(here("R-workshop-data", "invert_counts_curated.xlsx"))
+
+fish_counts <- read_csv(here("R-workshop-data", "fish_counts_curated.csv"))
+
+kelp_counts_abur <- read_excel(here("R-workshop-data", "kelp_counts_curated.xlsx"))
+
+```
+
+- select() function: keep, exclude or rearrange COLUMNS
+- filter() function: keeps or excludes ROWS (observations) based on whether or not they match variable conditions
+
+
+## Filter to match rows based on a character string
+
+Only keep observations from fish_counts where the common_name variable matches "garibaldi"
+
+```{r}
+
+fish_garibaldi <-fish_counts %>% 
+  filter(common_name == "garibaldi")
+
+# Use janitor::clean_names() to automatically update all of your column names to lowercase_snake_case
+```
+
+
+## Filter to keep or exclude observations based on numeric conditions
+
+Create a subset where total_counts is greater than or equal to 50:
+
+```{r}
+
+fish_over50 <- fish_counts %>% 
+  filter(total_count >= 50)
+
+```
+
+
+Create a subset that only contains observations for fish at Mohawk Reef ("mohk"):
+
+```{r}
+
+mohawk_fish <-fish_counts %>% 
+  filter(site == "mohk")
+
+```
+
+## Filter to keep rows that match THIS or THAT
+
+Example: We want to keep any observations for garibaldi, blacksmith, or black surfperch
+
+Use the %in% operator to look for any matches within a vector
+
+```{r}
+
+fish_3sp <- fish_counts %>% 
+  filter(common_name %in% c("garibaldi", "blacksmith", "black surfperch"))
+
+# Writing the or statements explicitly:
+# Use the vertical line | to indicate "or"
+
+fish_3sp_v2 <- fish_counts %>% 
+  filter(common_name == "garibaldi" | common_name == "blacksmith" | common_name == "black surfperch")
+
+```
+
+## Filter to return rows that match conditions for MULTIPLE variables (AND statements)
+
+I want to create a subset called urchin_abur_mohk thtat only keeps observations where:
+
+- site is "abur" or "mohk" AND
+- species is "purple urchin"
+
+Some ways to do this:
+
+- separate "AND" conditions within a single filter line by a comma
+- separate "AND" conditions within a single filter line by an ampersand (&)
+- putting each filter condition within a separate filter line
+
+Reminder: "OR" %in%
+```{r}
+urchin_abur_mohk <- invert_counts %>%
+  filter(site %in% c("abur", "mohk"), common_name == "purple urchin")
+```
+
+
+
+
+
