@@ -682,6 +682,88 @@ ggplot(data = siteyear_summary, aes(x = year, y = median_size_mm, color = site))
 ggsave(here(&quot;figures/lobsters-line.png&quot;))</code></pre>
 <pre><code>## Saving 7 x 5 in image</code></pre>
 </div>
+<div id="dplyrcount-for-counting-by-group" class="section level1">
+<h1>dplyr::count() for counting by group</h1>
+<p>This is a “shortcut” function</p>
+<pre class="r"><code>lobsters %&gt;% 
+  count(site, year)</code></pre>
+<pre><code>## # A tibble: 35 x 3
+##    site   year     n
+##    &lt;chr&gt; &lt;dbl&gt; &lt;int&gt;
+##  1 aque   2012    38
+##  2 aque   2013    32
+##  3 aque   2014   100
+##  4 aque   2015    83
+##  5 aque   2016    48
+##  6 aque   2017    67
+##  7 aque   2018    54
+##  8 carp   2012    78
+##  9 carp   2013    93
+## 10 carp   2014    79
+## # … with 25 more rows</code></pre>
+<pre class="r"><code>## this is the same as 
+
+lobsters %&gt;%
+  group_by(site, year) %&gt;% 
+  summarize(n = n()) %&gt;% 
+  ungroup()</code></pre>
+<pre><code>## # A tibble: 35 x 3
+##    site   year     n
+##    &lt;chr&gt; &lt;dbl&gt; &lt;int&gt;
+##  1 aque   2012    38
+##  2 aque   2013    32
+##  3 aque   2014   100
+##  4 aque   2015    83
+##  5 aque   2016    48
+##  6 aque   2017    67
+##  7 aque   2018    54
+##  8 carp   2012    78
+##  9 carp   2013    93
+## 10 carp   2014    79
+## # … with 25 more rows</code></pre>
+</div>
+<div id="mutate-adds-a-new-column-make-a-new-variable" class="section level1">
+<h1>mutate() adds a new column (make a new variable)</h1>
+<ul>
+<li>add new column that is the size in meters</li>
+<li>add a new column that is a repeated value</li>
+</ul>
+<pre class="r"><code>head(lobsters)</code></pre>
+<pre><code>## # A tibble: 6 x 7
+##    year month date    site  transect replicate size_mm
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;
+## 1  2012     8 8/20/12 ivee         3 A              70
+## 2  2012     8 8/20/12 ivee         3 B              60
+## 3  2012     8 8/20/12 ivee         3 B              65
+## 4  2012     8 8/20/12 ivee         3 B              70
+## 5  2012     8 8/20/12 ivee         3 B              85
+## 6  2012     8 8/20/12 ivee         3 C              60</code></pre>
+<pre class="r"><code>lobsters %&gt;% 
+  mutate(size_m = size_mm / 1000,
+         millenia = 2000,
+         observer = &quot;Allison Horst&quot;)</code></pre>
+<pre><code>## # A tibble: 6,366 x 10
+##     year month date   site  transect replicate size_mm size_m millenia observer 
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;    
+##  1  2012     8 8/20/… ivee         3 A              70  0.07      2000 Allison …
+##  2  2012     8 8/20/… ivee         3 B              60  0.06      2000 Allison …
+##  3  2012     8 8/20/… ivee         3 B              65  0.065     2000 Allison …
+##  4  2012     8 8/20/… ivee         3 B              70  0.07      2000 Allison …
+##  5  2012     8 8/20/… ivee         3 B              85  0.085     2000 Allison …
+##  6  2012     8 8/20/… ivee         3 C              60  0.06      2000 Allison …
+##  7  2012     8 8/20/… ivee         3 C              65  0.065     2000 Allison …
+##  8  2012     8 8/20/… ivee         3 C              67  0.067     2000 Allison …
+##  9  2012     8 8/20/… ivee         3 D              70  0.07      2000 Allison …
+## 10  2012     8 8/20/… ivee         4 B              85  0.085     2000 Allison …
+## # … with 6,356 more rows</code></pre>
+<div id="select-to-subset-variables-by-columns" class="section level2">
+<h2>select() to subset variables by columns</h2>
+<p>let’s select - date - site - size_m</p>
+<pre class="r"><code>lobsters_selected &lt;- lobsters %&gt;% 
+  mutate(size_m = size_mm / 1000) %&gt;% 
+  select(date, site, size_m)</code></pre>
+</div>
+</div>
 
 
 
