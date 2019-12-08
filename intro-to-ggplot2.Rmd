@@ -166,7 +166,7 @@ Activity: Create a combined column graph + line graph of visitation
 
 ```{r}
 ggplot(data = ci_np, aes(x = year, y = visitors)) +
-  geom_col(color = "purple", 
+  geom_col(color = "orange", 
            fill = "purple") +
   geom_line(color = "magenta")
 ```
