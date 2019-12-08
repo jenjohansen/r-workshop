@@ -105,3 +105,98 @@ ggplot(data = ci_np, aes(x = year, y = visitors)) +
              alpha = 0.5)
 ```
 
+## Customize elements based on variable values or outcomes
+
+
+```{r}
+ggplot(data = ci_np, aes(x = year, y = visitors)) +
+  geom_point(aes(size = visitors,
+                 color = visitors),
+             pch = 17,
+             alpha = 0.5)
+```
+
+
+Activity: Create a column plot of CINP visitation over time, where the FILL COLOR changes based on the number of visitors, and the outline color (color = ) is "magenta".
+
+
+```{r}
+ggplot(data = ci_np, aes(x = year, y = visitors)) +
+  geom_col(aes(fill = visitors),
+             color = "magenta")
+```
+
+
+```{r}
+ggplot(data = ci_np, aes(x = year, y = visitors)) +
+  geom_line(size = 3,
+            color = "red") +
+  theme_light()
+```
+
+
+## Add/update labels and titles
+
+Using 'labs' function
+
+```{r}
+ggplot(data = ci_np, aes(x = year, y = visitors)) +
+  geom_point(size = 1,
+            color = "navy") +
+  theme_minimal() +
+  labs(x = "My x-axis title",
+       y = "Annual Visitors",
+       title = "Channel Islands NP Visitation",
+       subtitle = "(1963 - 2016)")
+```
+
+## Combine compatible geoms
+
+Example: Add point plot on top of a line plot:
+
+```{r}
+ggplot(data = ci_np, aes(x = year, y = visitors)) +
+  geom_line(color = "purple") +
+  geom_point(color = "magenta",
+             aes(size = year))
+```
+
+
+Activity: Create a combined column graph + line graph of visitation
+
+```{r}
+ggplot(data = ci_np, aes(x = year, y = visitors)) +
+  geom_col(color = "purple", 
+           fill = "purple") +
+  geom_line(color = "magenta")
+```
+
+## Create a line graph with multiple series
+
+```{r}
+ggplot (data = ca_np, aes(x = year, y = visitors, color = park_name)) +
+  geom_line()
+```
+
+## Faceting ggplot graphs
+
+- Each series (group) gets its own plot panel
+
+
+```{r}
+ggplot (data = ca_np, aes(x = year, y = visitors, color = park_name)) +
+  geom_line(show.legend = FALSE) +
+  theme_minimal() +
+  facet_wrap(~ park_name)
+```
+
+
+##Use ggsave to export a plot
+
+```{r}
+ggsave("np_graph.png", dpi = 180, width = 8, height = 7)
+```
+
+
+
+
